@@ -5,8 +5,8 @@ const mongodb = require('mongodb');
 const mongoose = require('mongoose');
 const socket = require('socket.io');
 const path = require('path');
-var multer = require('multer')
-var upload = multer({ dest: 'uploads/' })
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
 
 
 const usersRouter = require('./routes/user');
@@ -26,7 +26,7 @@ app.set('view engine', 'ejs');
 app.use('/user', usersRouter);
 
 app.use('/', (req, res) => {
-    res.render('index');
+    res.render('index', { title: 'home' });
 })
 
 const port = process.env.PORT || 3000;
