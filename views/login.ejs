@@ -15,8 +15,12 @@
 
 <body>
     <div class="container">
-        <h2 class="page-header">Login</h2>
+        <%- include ('partials/nav') %>
+        <h2 class="page-header pt-4">Login</h2>
         <p>Please login below</p>
+        <ul>
+
+        </ul>
         <form method="post" action="/users/login" enctype="multipart/form-data">
             <div class="form-group">
                 <label>Username</label>

@@ -1,10 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path');
-const multer = require('multer')
-const upload = multer({ dest: 'uploads/' })
-const { check, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
+
+const Joi = require('@hapi/joi');
+
+function validationError(data) {
+    const schema = {
+        name: Joi.string().min(6).required(),
+        email: Joi.string().min(6).required().email(),
+        username: Joi.string().min(6).required(),
+        password: Joi.string().min(6).required(),
+        repeat_password: Joi.ref('password'),
+    };
+    return schema.validate(data);
+}
+
+//Database schema
 const User = require('../models/user');
 
 router.get('/register', (req, res) => {
@@ -30,12 +44,23 @@ router.get('/', async (req, res) => {
 });
 //register user route
 router.post('/register', upload.single('profileimage'), async (req, res) => {
+
     let name = req.body.name;
     let email = req.body.email;
     let username = req.body.username;
     let password = req.body.password;
-    let password2 = req.body.password2;
+    let repeat_password = req.body.repeat_password;
+    //Validate 
+    // const { error } = validationError(req.body);
 
+    const salt = await bcrypt.genSalt(10);
+    const hashPass = await bcrypt.hash(password, salt);
+
+    /*   if (error) {
+            res.render('register', {
+            error: error.details[0].message
+        });
+      } else { */
     if (req.file) {
         console.log('Uploading file...');
         var profileimage = req.file.filename;
@@ -48,7 +73,7 @@ router.post('/register', upload.single('profileimage'), async (req, res) => {
         name: name,
         email: email,
         username: username,
-        password: password,
+        password: hashPass,
         profileimage: profileimage
     });
     console.log(user);
@@ -59,11 +84,36 @@ router.post('/register', upload.single('profileimage'), async (req, res) => {
     } catch (err) {
         res.status(400).send({ message: err.message });
     }
+    // }
+
 });
 //login user route
-router.post('/login', (req, res) => {
-    //test render
-    res.render('userprofile', { title: 'userprofile' });
+router.post('/login', async (req, res) => {
+    //Validate 
+    /*   const { error } = loginValidation(req.body);
+      if (error) {
+          res.render('login', {
+              error: error.details[0].message
+          });
+      } else {
+  
+      } */
+
+    const user = await User.findOne({ username: req.body.username });
+    console.log(req.body.password);
+    const validPass = await bcrypt.compare(req.body.password, user.password);
+    if (!user) {
+        res.render('login', {
+            error: 'Email is not found'
+        });
+    } else if (!validPass) {
+        res.render('login', {
+            error: 'Invalid password'
+        });
+    } else {
+        res.redirect('/users/userprofile');
+    }
+
 });
 
 module.exports = router;

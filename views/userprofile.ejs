@@ -14,23 +14,39 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <a class="navbar-brand" href="#">Slack-Clone</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <div class="container">
+        <%- include ('partials/nav') %>
+    </div>
+    <div class="row pt-4 ">
+        <div class="col-md-4 col-lg-3">
+            <div class="profile-detail card-box">
+                <div>
+                    <img src="" id="profilePic" class="img-circle" alt="profile-image">
+                    <hr>
+                    <h4 class="text-uppercase font-600">User Profile</h4>
 
-        <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav mr-auto">
-                <li class="navbar-item active">
-                    <a class="nav-link" href="/users/userprofile">Home <span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-            <a class="btn btn-success my-2 my-sm-0" type="submit" role="button" href="/users/login">Logout</a>
+                    <div class="text-left">
+                        <p class="text-muted font-13"><strong>Name :</strong> <span class="m-l-15">Name</span></p>
+                        <p class="text-muted font-13"><strong>Username :</strong><span class="m-l-15">username</span>
+                        </p>
+                        <p class="text-muted font-13"><strong>Email :</strong> <span class="m-l-15">Email</span></p>
+                    </div>
+                    <div class="button-list m-t-20">
+                        <button type="button" class="btn btn-success waves-effect waves-light">
+                            Edit
+                        </button>
+
+                        <button type="button" class="btn btn-danger waves-effect waves-light">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </nav>
-    <div id="userProfile"> User Profile</div>
+        <div class="col-md-8 col-lg-9">
+            Create chat room
+        </div>
+    </div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="/javascripts/bootstrap.js"></script>
     <script src="/javascripts/main.js"></script>
