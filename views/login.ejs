@@ -6,33 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Bootstrap core CSS -->
-    <link href="/stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/spacelab/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-nl8CRcNYOGaXP68QRJeVTXCWAhwqBhRha0QbuubX1qDQpGT3GgclpvyzkR2JzyfZ" crossorigin="anonymous">
+    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
 
     <title>Slack-Clone</title>
 </head>
 
 <body>
-    <%- include ('partials/nav') %>
-    <h1>Slack-Clone</1>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-        <script src="/javascripts/bootstrap.js"></script>
-        <div class="container">
-            <h2 class="page-header">Login</h2>
-            <p>Please login below</p>
-            <form method="post" action="/users/login" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label>Username</label>
-                    <input name="username" type="text" placeholder="Enter Username" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input name="password" type="password" placeholder="Enter Password" class="form-control">
-                </div>
+    <div class="container">
+        <h2 class="page-header">Login</h2>
+        <p>Please login below</p>
+        <form method="post" action="/users/login" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Username</label>
+                <input name="username" type="text" placeholder="Enter Username" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input name="password" type="password" placeholder="Enter Password" class="form-control">
+            </div>
+            <div class="text-right">
                 <input type="submit" name="submit" value="Login" class="btn btn-primary">
-            </form>
+            </div>
+        </form>
+        <div class="pt-4 text-center">
+            <p> Not registered? <a class="nav-link" href="/users/register">Register</a> </p>
         </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="javascripts/bootstrap.js"></script>
 </body>
 
 </html>
