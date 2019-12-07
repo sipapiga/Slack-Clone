@@ -11,8 +11,7 @@ node_modules
 .env 
 
 #Photo folder
-uploads
-/uploads/
+uploads/**
 
 # User-specific files
 *.suo
