@@ -38,6 +38,17 @@ app.use(seesion({
 
 app.use(flash());
 
+app.get('*', (req, res, next) => {
+    res.locals.user = req.user || null;
+    next();
+});
+
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error = req.flash('error');
+    next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -45,7 +56,7 @@ app.use('/api/users', usersRouter);
 
 app.use('/', (req, res) => {
     res.render('login', { title: 'login' });
-})
+});
 
 dotenv.config();
 mongoose.connect(process.env.DB_CONNECT, { useUnifiedTopology: true, useNewUrlParser: true }, () => console.log('connected to DB'));

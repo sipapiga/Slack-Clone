@@ -4,3 +4,7 @@ body {
     height: 100vh;
     font-family: "Muli", sans-serif;
   }
+
+.img-circle{
+  height:250px;
+ }

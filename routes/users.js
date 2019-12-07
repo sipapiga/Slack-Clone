@@ -4,7 +4,17 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const session = require('express-session');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: './public/uploads/',
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({
+    storage: storage,
+});
 
 
 const Joi = require('@hapi/joi');
@@ -32,10 +42,11 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/dashboard', (req, res) => {
-    console.log(req);
+    console.log(req.user);
     res.render('dashboard', {
         title: 'home',
-        data: req.user
+        data: req.user,
+        file: `/uploads/${req.user.profileimage}`
     });
 });
 
@@ -68,6 +79,7 @@ router.post('/register', upload.single('profileimage'), async (req, res) => {
         });
       } else { */
     if (req.file) {
+        console.log(req.file);
         console.log('Uploading file...');
         var profileimage = req.file.filename;
     } else {
@@ -87,6 +99,7 @@ router.post('/register', upload.single('profileimage'), async (req, res) => {
         const saveUser = await user.save();
         /*   res.location('/');
           res.redirect('/users/login' );*/
+        req.flash('success_msg', 'You are now registered');
         res.status(200).redirect('/users/login');
     } catch (err) {
         res.status(400).send({ message: err.message });
@@ -97,7 +110,7 @@ router.post('/register', upload.single('profileimage'), async (req, res) => {
 //login user route
 router.post('/loginuser', passport.authenticate('local', {
     successRedirect: '/api/users/dashboard',
-    failureRediarect: '/api/users/login',
+    failureRedirect: '/api/users/login',
     failureFlash: true
 }));
 
@@ -106,6 +119,11 @@ router.put('/users/edit', (req, res) => {
 
 });
 
+router.get('/logout', (req, res) => {
+    req.logOut();
+    req.flash('success_msg', 'You are now logout');
+    res.redirect('/users/login');
+})
 
 
 module.exports = router;

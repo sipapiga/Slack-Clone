@@ -9,14 +9,14 @@ function initialize(passport) {
         const user = await User.findOne({ username: username });
         if (!user) {
             return done(null, false, {
-                message: 'Username is not found',
+                message: 'Username is not found'
             });
         }
         try {
             const validPass = await bcrypt.compare(password, user.password);
             if (!validPass) {
                 return done(null, false, {
-                    message: 'Invalid password',
+                    message: 'Invalid password'
                 });
             } else {
                 return done(null, user);
