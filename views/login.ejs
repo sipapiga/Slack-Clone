@@ -18,10 +18,10 @@
         <%- include ('partials/nav') %>
         <h2 class="page-header pt-4">Login</h2>
         <p>Please login below</p>
-        <ul>
+        <div>
 
-        </ul>
-        <form method="post" action="/users/login" enctype="multipart/form-data">
+        </div>
+        <form method="post" action="/api/users/loginuser">
             <div class="form-group">
                 <label>Username</label>
                 <input name="username" type="text" placeholder="Enter Username" class="form-control">
@@ -31,17 +31,18 @@
                 <input name="password" type="password" placeholder="Enter Password" class="form-control">
             </div>
             <div class="text-right">
-                <input type="submit" name="submit" value="Login" class="btn btn-primary">
+                <input type="submit" name="submit" value="Login" class="btn btn-primary" id="loginBtn">
             </div>
         </form>
         <div class="pt-4 text-center">
-            <p> Not registered? <a class="nav-link" href="/users/register">Register</a> </p>
+            <p> No Account? <a class="nav-link" href="/users/register">Register</a> </p>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
-    <script src="javascripts/bootstrap.js"></script>
+    <script src="/javascripts/bootstrap.js"></script>
+    <script src="/javascripts/main.js"></script>
 </body>
 
 </html>

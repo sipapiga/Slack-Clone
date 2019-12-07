@@ -23,16 +23,20 @@
                 <div>
                     <img src="" id="profilePic" class="img-circle" alt="profile-image">
                     <hr>
-                    <h4 class="text-uppercase font-600">User Profile</h4>
+                    <h4 class="text-uppercase font-600"><%= data.profileimage %></h4>
 
                     <div class="text-left">
-                        <p class="text-muted font-13"><strong>Name :</strong> <span class="m-l-15">Name</span></p>
-                        <p class="text-muted font-13"><strong>Username :</strong><span class="m-l-15">username</span>
+                        <p class="text-muted font-13"><strong>Name :</strong> <span
+                                class="m-l-15"><%= data.name %></span>
                         </p>
-                        <p class="text-muted font-13"><strong>Email :</strong> <span class="m-l-15">Email</span></p>
+                        <p class="text-muted font-13"><strong>Username :</strong><span
+                                class="m-l-15"><%= data.username %></span>
+                        </p>
+                        <p class="text-muted font-13"><strong>Email :</strong> <span
+                                class="m-l-15"><%= data.email %></span></p>
                     </div>
                     <div class="button-list m-t-20">
-                        <button type="button" class="btn btn-success waves-effect waves-light">
+                        <button type="button" class="btn btn-success waves-effect waves-light" id="editUserBtn">
                             Edit
                         </button>
 
@@ -47,7 +51,10 @@
             Create chat room
         </div>
     </div>
+    <!--  jQuery -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!--  axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="/javascripts/bootstrap.js"></script>
     <script src="/javascripts/main.js"></script>
 </body>

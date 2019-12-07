@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const passport = require('passport');
+const session = require('express-session');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
@@ -19,7 +21,7 @@ function validationError(data) {
 }
 
 //Database schema
-const User = require('../models/user');
+const User = require('../models/User');
 
 router.get('/register', (req, res) => {
     res.render('register', { title: 'register' });
@@ -29,8 +31,12 @@ router.get('/login', (req, res) => {
     res.render('login', { title: 'login' });
 });
 
-router.get('/userprofile', (req, res) => {
-    res.render('userprofile', { title: 'userprofile' });
+router.get('/dashboard', (req, res) => {
+    console.log(req);
+    res.render('dashboard', {
+        title: 'home',
+        data: req.user
+    });
 });
 
 //Get user from database
@@ -79,8 +85,9 @@ router.post('/register', upload.single('profileimage'), async (req, res) => {
     console.log(user);
     try {
         const saveUser = await user.save();
-        res.location('/');
-        res.redirect('/users/login');
+        /*   res.location('/');
+          res.redirect('/users/login' );*/
+        res.status(200).redirect('/users/login');
     } catch (err) {
         res.status(400).send({ message: err.message });
     }
@@ -88,32 +95,17 @@ router.post('/register', upload.single('profileimage'), async (req, res) => {
 
 });
 //login user route
-router.post('/login', async (req, res) => {
-    //Validate 
-    /*   const { error } = loginValidation(req.body);
-      if (error) {
-          res.render('login', {
-              error: error.details[0].message
-          });
-      } else {
-  
-      } */
+router.post('/loginuser', passport.authenticate('local', {
+    successRedirect: '/api/users/dashboard',
+    failureRediarect: '/api/users/login',
+    failureFlash: true
+}));
 
-    const user = await User.findOne({ username: req.body.username });
-    console.log(req.body.password);
-    const validPass = await bcrypt.compare(req.body.password, user.password);
-    if (!user) {
-        res.render('login', {
-            error: 'Email is not found'
-        });
-    } else if (!validPass) {
-        res.render('login', {
-            error: 'Invalid password'
-        });
-    } else {
-        res.redirect('/users/userprofile');
-    }
+router.put('/users/edit', (req, res) => {
+
 
 });
+
+
 
 module.exports = router;

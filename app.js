@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 const socket = require('socket.io');
 const path = require('path');
 const dotenv = require('dotenv');
+const passport = require('passport');
+const seesion = require('express-session');
+const flash = require('express-flash');
 const multer = require('multer')
 const upload = multer({ dest: 'uploads/' })
 
@@ -12,6 +15,10 @@ const upload = multer({ dest: 'uploads/' })
 const usersRouter = require('./routes/users');
 
 const app = express();
+
+const initiallizePassport = require('./config/passport');
+initiallizePassport(passport);
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,8 +29,19 @@ app.use(express.static('public'));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(seesion({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false
 
-app.use('/users', usersRouter);
+}));
+
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/api/users', usersRouter);
 
 app.use('/', (req, res) => {
     res.render('login', { title: 'login' });
