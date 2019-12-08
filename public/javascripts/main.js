@@ -20,18 +20,18 @@ $(document).ready(function () {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
-                axios({
-                    method: 'delete',
-                    url: 'http://localhost:3000/api/users/delete/' + userId
-                })
-                    .then(res => console.log(res))
-                    .catch(err => console.error(err));
                 if (result.value) {
                     Swal.fire(
                         'Deleted!',
                         'Your file has been deleted.',
                         'success'
                     )
+                    axios({
+                        method: 'delete',
+                        url: 'http://localhost:3000/api/users/delete/' + userId
+                    })
+                        .then(res => console.log(res))
+                        .catch(err => console.error(err));
                     window.location.href = '/api/users/login';
                 }
             })
