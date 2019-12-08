@@ -51,9 +51,10 @@ router.get('/dashboard', (req, res) => {
 });
 
 //Get user from database
-router.get('/', async (req, res) => {
+router.get('/:id/edit', async (req, res) => {
     try {
-        const user = await User.find();
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).send('The user with the given ID was not found');
         res.status(200).send(user);
     } catch (err) {
         res.status(500).send({ message: err.message });
@@ -114,10 +115,63 @@ router.post('/loginuser', passport.authenticate('local', {
     failureFlash: true
 }));
 
-router.put('/users/edit', (req, res) => {
+//edit user
+router.post('/edit/:id', upload.single('profileimage'), async (req, res) => {
+
+    //const user = await User.find(c => c.id === Number(req.params.id));
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).send('The user with the given ID was not found');
+    console.log(user);
+    if (req.body.name != null) {
+        user.name = req.body.name;
+    }
+    if (req.body.email != null) {
+        user.email = req.body.email;
+    }
+    if (req.body.username != null) {
+        user.username = req.body.username;
+    }
+    if (req.body.password != null) {
+        const salt = await bcrypt.genSalt(10);
+        const hashPass = await bcrypt.hash(req.body.password, salt);
+        user.password = hashPass;
+    }
+
+    if (req.file) {
+        console.log(req.file);
+        console.log('Uploading file...');
+        user.profileimage = req.file.filename;
+    } else {
+        console.log('No file upload...');
+        user.profileimage = 'noimage.jpg';
+    }
+
+    try {
+        const updateUser = await user.save();
+        res.status(200).redirect('/users/dashboard');
+    } catch (err) {
+        res.statu(400).send({ message: err.message });
+    }
 
 
+    /*  try {
+         const saveUser = await user.save();
+         res.status(200).redirect('/users/dashboard');
+     } catch (err) {
+         res.status(400).send(error.details[0].message);
+     } */
 });
+
+//delete user
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const removeUser = await User.deleteOne({ _id: req.params.id })
+        res.send(removeCustomer);
+    } catch (err) {
+        res.status(500).send({ message: err.message });
+    }
+});
+
 
 router.get('/logout', (req, res) => {
     req.logOut();
