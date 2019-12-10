@@ -151,7 +151,7 @@ router.post('/edit/:id', upload.single('profileimage'), async (req, res) => {
 
     try {
         const updateUser = await user.save();
-        res.status(200).redirect('/users/dashboard');
+        res.status(200).redirect('/api/users/dashboard');
     } catch (err) {
         res.statu(400).send({ message: err.message });
     }

@@ -17,6 +17,7 @@ const io = socket(server);
 
 const usersRouter = require('./routes/users');
 const chatRouter = require('./routes/chatroom');
+const Users = require('./utils/Userclass');
 
 const initiallizePassport = require('./config/passport');
 initiallizePassport(passport);
@@ -51,7 +52,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/chat', chatRouter(io));
+app.use('/chat', chatRouter(io, Users));
 app.use('/api/users', usersRouter);
 
 dotenv.config();

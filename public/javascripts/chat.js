@@ -4,11 +4,31 @@ $(document).ready(function () {
     const inputMsg = document.querySelector('#msg');
     const senderMsg = document.querySelector('#sender');
     const sender = senderMsg.value;
-    console.log(sender);
-    const chat = document.querySelector('#messages')
+    const senderImage = document.querySelector('#senderImage');
+    const userImage = senderImage.value;
+    const chat = document.querySelector('#messages');
+
 
     socket.on('connect', function () {
         console.log('Client connected');
+        let params = {
+            name: sender
+        }
+
+        socket.emit('join', params, function () {
+            console.log('User has joined!');
+        });
+    });
+
+    socket.on('new user', function (users) {
+        console.log(users.userlist);
+        let ol = $('<ol></ol>');
+
+        for (let i = 0; i < users.userlist.length; i++) {
+            ol.append('<p>' + users.userlist[i] + '</p>');
+        }
+
+        $('#users').html(ol);
     });
 
     socket.on('new message', data => {
@@ -17,14 +37,16 @@ $(document).ready(function () {
         const messageWrap = document.createElement('div');
         messageWrap.setAttribute('class', 'message');
         const html = `
-        <div class="letter">${data.from}</div>
-        <div class="">
+        <li class="left">
+            <span class="chat-img1 pull-left">
+                <img src="/uploads/${data.profileimage}" class"img-circle" alt="userImage" height="32px">
+                <h4 class="from">${data.from}</h4>
+            </span>
             <div class="from-details flex items-end">
-                <h3 class="from">${data.from}</h3>
                 <time datetime="${data.time}" class="time">${new Date(data.time).toLocaleString()}</time>
+                <p>${data.msg}</p>
             </div>
-            <p>${data.msg}</p>
-        </div>
+        </li>
     `;
         messageWrap.innerHTML = html;
         chat.appendChild(messageWrap);
@@ -38,7 +60,8 @@ $(document).ready(function () {
 
         socket.emit('send message', {
             msg: message,
-            username: sender
+            username: sender,
+            userProfileimage: userImage
         });
         inputMsg.value = '';
     })

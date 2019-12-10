@@ -6,37 +6,19 @@ body {
   }
 
 .img-circle{
-  height:250px;
+  height: 32px;
+  width: 32px;
  }
 
- /* Chat app */
-.chat-app-list {
-  padding: 0px 20px;
+ .profile-detail img {
+  height: 120px;
+  width: 120px;
 }
-.chat-app-list .list-group-item {
-  background: transparent;
+
+.card-body a {
+  color: white;
 }
-.chat-ready .conversation-list {
-  max-height: 800px;
-}
-.chat-ready .spinner {
-  width: 70px;
-  text-align: center;
-}
-.chat-ready .spinner > div {
-  width: 10px;
-  height: 10px;
-  background-color: #E3E3E3;
-  border-radius: 100%;
-  display: inline-block;
-  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-}
-.chat-ready .spinner .bounce1 {
-  -webkit-animation-delay: -0.32s;
-  animation-delay: -0.32s;
-}
-.chat-ready .spinner .bounce2 {
-  -webkit-animation-delay: -0.16s;
-  animation-delay: -0.16s;
+.card-body a:hover {
+  color: rgb(226, 222, 215);
+  text-decoration: none !important;
 }

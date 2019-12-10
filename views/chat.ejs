@@ -27,7 +27,8 @@
                         <div class="row">
                             <div class="col-sm-9 chat-inputbar">
                                 <form id="message-form">
-                                    <input type="hidden" name="sender" id="sender" value="<% user.username %>">
+                                    <input type="hidden" id="sender" value="<%= user.username %>">
+                                    <input type="hidden" id="senderImage" value="<%= user.profileimage %>">
                                     <input type="text" name="message" id="msg" class="form-control chat-input"
                                         placeholder="Enter your text">
                             </div>
@@ -43,10 +44,8 @@
             <div class="col-lg-4">
                 <div class="card-box">
                     <h4 class="m-t-0 m-b-20 header-title  pt-4"><b>Online</b></h4>
-                    <div class="ctext-wrap">
-                        <p>
-                            online
-                        </p>
+                    <div class="ctext-wrap" id="users">
+
                     </div>
                 </div>
             </div>
