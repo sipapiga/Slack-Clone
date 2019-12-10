@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Bootstrap core CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/spacelab/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-nl8CRcNYOGaXP68QRJeVTXCWAhwqBhRha0QbuubX1qDQpGT3GgclpvyzkR2JzyfZ" crossorigin="anonymous">
+
+    <link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
+
+    <title>Slack-Clone</title>
+</head>
+
+<body>
+    <%- include ('partials/nav') %>
+    <div class="container">
+        <div class="row pt-4">
+            <!-- CHAT -->
+            <div class="col-lg-8">
+                <div class="card-box">
+                    <h4 class="m-t-0 m-b-20 header-title  pt-4"><b>WEBB19</b></h4>
+                    <div class="chat-conversation">
+                        <div id="messages"></div>
+                        <div class="row">
+                            <div class="col-sm-9 chat-inputbar">
+                                <form id="message-form">
+                                    <input type="hidden" name="sender" id="sender" value="<% user.username %>">
+                                    <input type="text" name="message" id="msg" class="form-control chat-input"
+                                        placeholder="Enter your text">
+                            </div>
+                            <div class="col-sm-3 chat-send">
+                                <button type="submit" class="btn btn-md btn-info btn-block waves-effect waves-light"
+                                    id="sendBtn">Send</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end col-->
+            <div class="col-lg-4">
+                <div class="card-box">
+                    <h4 class="m-t-0 m-b-20 header-title  pt-4"><b>Online</b></h4>
+                    <div class="ctext-wrap">
+                        <p>
+                            online
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <!--  axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="/javascripts/bootstrap.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/chat.js"></script>
+</body>
+
+</html>

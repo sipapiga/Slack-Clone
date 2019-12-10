@@ -8,13 +8,15 @@ const dotenv = require('dotenv');
 const passport = require('passport');
 const seesion = require('express-session');
 const flash = require('express-flash');
-const multer = require('multer')
-const upload = multer({ dest: 'uploads/' })
+const http = require('http');
 
-
-const usersRouter = require('./routes/users');
 
 const app = express();
+const server = http.createServer(app);
+const io = socket(server);
+
+const usersRouter = require('./routes/users');
+const chatRouter = require('./routes/chatroom');
 
 const initiallizePassport = require('./config/passport');
 initiallizePassport(passport);
@@ -38,25 +40,19 @@ app.use(seesion({
 
 app.use(flash());
 
-app.get('*', (req, res, next) => {
-    res.locals.user = req.user || null;
-    next();
-});
-
-app.use((req, res, next) => {
-    res.locals.success_msg = req.flash('success_msg');
-    res.locals.error = req.flash('error');
-    next();
-});
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/users', usersRouter);
-
-app.use('/', (req, res) => {
-    res.render('login', { title: 'login' });
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error = req.flash('error');
+    res.locals.user = req.user || null;
+    next();
 });
+
+app.use('/chat', chatRouter(io));
+app.use('/api/users', usersRouter);
 
 dotenv.config();
 mongoose.connect(process.env.DB_CONNECT, { useUnifiedTopology: true, useNewUrlParser: true }, () => console.log('connected to DB'));
@@ -64,5 +60,5 @@ mongoose.connect(process.env.DB_CONNECT, { useUnifiedTopology: true, useNewUrlPa
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => console.log(`Server started on ${port}`));
+server.listen(port, () => console.log(`Server started on ${port}`));
 

@@ -47,7 +47,9 @@ $(document).ready(function () {
             .then(res => console.log(res))
             .catch(err => console.error(err));
 
-        // Setting up the action url for the book
+        // Setting up the action url
         document.getElementById('editForm').action = `/api/users/edit/${userId}`;
     }
+
+
 });

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
-const session = require('express-session');
 const multer = require('multer');
 const path = require('path');
 
@@ -39,6 +38,10 @@ router.get('/register', (req, res) => {
 
 router.get('/login', (req, res) => {
     res.render('login', { title: 'login' });
+});
+
+router.get('/home', (req, res) => {
+    res.render('home', { title: 'login' });
 });
 
 router.get('/dashboard', (req, res) => {
@@ -176,7 +179,7 @@ router.delete('/delete/:id', async (req, res) => {
 router.get('/logout', (req, res) => {
     req.logOut();
     req.flash('success_msg', 'You are now logout');
-    res.redirect('/users/login');
+    res.redirect('/api/users/login');
 })
 
 
