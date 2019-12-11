@@ -108,7 +108,7 @@ router.post('/register', upload.single('profileimage'), async (req, res) => {
         /*   res.location('/');
           res.redirect('/users/login' );*/
         req.flash('success_msg', 'You are now registered');
-        res.status(200).redirect('/users/login');
+        res.status(200).redirect('/api/users/login');
     } catch (err) {
         res.status(400).send({ message: err.message });
     }

@@ -9,6 +9,10 @@
     <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/spacelab/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-nl8CRcNYOGaXP68QRJeVTXCWAhwqBhRha0QbuubX1qDQpGT3GgclpvyzkR2JzyfZ" crossorigin="anonymous">
 
+    <!-- icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
     <link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
 
     <title>Slack-Clone</title>
@@ -21,18 +25,21 @@
             <!-- CHAT -->
             <div class="col-lg-8">
                 <div class="card-box">
-                    <h4 class="m-t-0 m-b-20 header-title  pt-4"><b><%= room %></b></h4>
+                    <h4 class="m-t-0 m-b-20 header-title pt-4"><b><%= room %></b></h4>
                     <div class="chat-conversation">
                         <div id="messages"></div>
                         <div class="row">
                             <div class="col-sm-9 chat-inputbar">
                                 <form id="message-form">
-                                    <input type="hidden" id="sender" value="<%= user.username %>">
-                                    <input type="hidden" id="senderImage" value="<%= user.profileimage %>">
-                                    <input type="text" name="message" id="msg" class="form-control chat-input"
-                                        placeholder="Enter your text">
+                                    <div class="input-group mb-3">
+                                        <input type="hidden" id="room" value="<%= room %>">
+                                        <input type="hidden" id="sender" value="<%= user.username %>">
+                                        <input type="hidden" id="senderImage" value="<%= user.profileimage %>">
+                                        <input type="text" name="message" id="msg" class="form-control chat-input"
+                                            placeholder="Enter your text">
+                                    </div>
                             </div>
-                            <div class="col-sm-3 chat-send">
+                            <div class=" col-sm-3 chat-send">
                                 <button type="submit" class="btn btn-md btn-info btn-block waves-effect waves-light"
                                     id="sendBtn">Send</button>
                             </div>
@@ -43,8 +50,8 @@
             </div> <!-- end col-->
             <div class="col-lg-4">
                 <div class="card-box">
-                    <h4 class="m-t-0 m-b-20 header-title  pt-4"><b>Online</b></h4>
-                    <div class="text-wrap" id="users">
+                    <h4 class="m-t-0 m-b-20 header-title  pt-4"><b>Online <span id="onlineNum"></span></b></h4>
+                    <div id="users">
 
                     </div>
                 </div>
@@ -58,6 +65,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="/javascripts/bootstrap.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/siofu/client.js"></script>
     <script src="/javascripts/chat.js"></script>
 </body>
 

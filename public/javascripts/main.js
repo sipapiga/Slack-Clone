@@ -33,7 +33,7 @@ $(document).ready(function () {
                     )
                     axios({
                         method: 'delete',
-                        url: 'http://localhost:3000/chat/delete/' + userId
+                        url: 'http://localhost:3000/room/delete/' + userId
                     })
                         .then(res => console.log(res))
                         .catch(err => console.error(err));

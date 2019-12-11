@@ -7,32 +7,28 @@ $(document).ready(function () {
     const senderImage = document.querySelector('#senderImage');
     const userImage = senderImage.value;
     const chat = document.querySelector('#messages');
-
+    const room = document.querySelector('#room').value;
 
     socket.on('connect', function () {
         console.log('Client connected');
         let params = {
+            room: room,
             name: sender
         }
 
         socket.emit('join', params, function () {
-            console.log('User has joined!');
+            console.log('User has joined this channel!');
         });
     });
 
     socket.on('new user', function (users) {
         console.log(users);
-        let userOnline = users.userList.map(online => {
-            return online.name;
-        })
-        console.log(userOnline);
         let ol = $('<ol></ol>');
 
-        for (let i = 0; i < userOnline.length; i++) {
-            ol.append('<p>' + userOnline[i] + '</p>');
-            console.log(userOnline);
+        for (let i = 0; i < users.length; i++) {
+            ol.append('<p>' + users[i] + '</p>');
         }
-
+        $('#onlineNum').text('(' + users.length + ')');
         $('#users').html(ol);
     });
 
@@ -42,16 +38,22 @@ $(document).ready(function () {
         const messageWrap = document.createElement('div');
         messageWrap.setAttribute('class', 'message');
         const html = `
-        <li class="left">
-            <span class="chat-img1 pull-left">
-                <img src="/uploads/${data.profileimage}" class"img-circle" alt="userImage" height="32px">
-                <h4 class="from">${data.from}</h4>
-            </span>
-            <div class="from-details flex items-end">
-                <time datetime="${data.time}" class="time">${new Date(data.time).toLocaleString()}</time>
-                <p>${data.msg}</p>
-            </div>
-        </li>
+        
+        <ul class="list-unstyled">
+            <li class="clearfix">
+                <div class="chat-avatar">
+                   <img src="/uploads/${data.profileimage}" class"img-circle" alt="userImage" height="32px">
+                    <time datetime="${data.time}" class="time">${new Date(data.time).toLocaleString()}</time>
+                </div>
+                <div class="conversation-text flex items-end">
+                    <div class="text-wrap">
+                        <h4 class="from">${data.from}</h4>
+                            <p>${data.msg}</p>
+                    </div>
+                   
+                </div>
+            </li>
+        </ul>
     `;
         messageWrap.innerHTML = html;
         chat.appendChild(messageWrap);
@@ -65,6 +67,7 @@ $(document).ready(function () {
 
         socket.emit('send message', {
             msg: message,
+            room: room,
             username: sender,
             userProfileimage: userImage
         });

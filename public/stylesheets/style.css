@@ -30,3 +30,23 @@ body {
   align-items: flex-end;
   margin-left: 150px;
 }
+
+.chat-avatar{
+  display: inline-block;
+
+  text-align: center;
+  width: 75px;
+}
+.conversation-text {
+  display: inline-block;
+ 
+  font-size: 16px;
+  margin-left: 50px;
+  width: 70%;
+}
+.chat-avatar img {
+  border-radius: 100%;
+  width: 60%;
+}
+
+
