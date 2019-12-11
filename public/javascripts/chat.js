@@ -21,11 +21,16 @@ $(document).ready(function () {
     });
 
     socket.on('new user', function (users) {
-        console.log(users.userlist);
+        console.log(users);
+        let userOnline = users.userList.map(online => {
+            return online.name;
+        })
+        console.log(userOnline);
         let ol = $('<ol></ol>');
 
-        for (let i = 0; i < users.userlist.length; i++) {
-            ol.append('<p>' + users.userlist[i] + '</p>');
+        for (let i = 0; i < userOnline.length; i++) {
+            ol.append('<p>' + userOnline[i] + '</p>');
+            console.log(userOnline);
         }
 
         $('#users').html(ol);

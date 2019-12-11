@@ -31,6 +31,7 @@ function validationError(data) {
 
 //Database schema
 const User = require('../models/User');
+const Channel = require('../models/Channel');
 
 router.get('/register', (req, res) => {
     res.render('register', { title: 'register' });
@@ -44,12 +45,15 @@ router.get('/home', (req, res) => {
     res.render('home', { title: 'login' });
 });
 
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard', async (req, res) => {
     console.log(req.user);
+    const room = await Channel.find();
+    console.log(room);
     res.render('dashboard', {
         title: 'home',
         data: req.user,
-        file: `/uploads/${req.user.profileimage}`
+        file: `/uploads/${req.user.profileimage}`,
+        room: room
     });
 });
 
@@ -169,7 +173,7 @@ router.post('/edit/:id', upload.single('profileimage'), async (req, res) => {
 router.delete('/delete/:id', async (req, res) => {
     try {
         const removeUser = await User.deleteOne({ _id: req.params.id })
-        res.send(removeCustomer);
+        res.send(removeUser);
     } catch (err) {
         res.status(500).send({ message: err.message });
     }

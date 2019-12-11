@@ -1,6 +1,6 @@
 class Users {
     constructor() {
-        this.userlist = ['Pat', 'Nat'];
+        this.userList = [];
     }
 
     addUser(id, name) {
@@ -10,7 +10,7 @@ class Users {
             name: name
         }
         console.log(newUser);
-        //   this.userList.push(newUser);
+        this.userList.push(newUser);
         console.log("AFTER ADDING USERS", this.userList);
         return newUser;
     }

@@ -1,15 +1,51 @@
 $(document).ready(function () {
+
     let userId = '';
     const editUserBtn = document.querySelector('.editUserBtn');
     const deleteBtn = document.querySelector('.deleteBtn');
+    const deleteRoomBtn = document.querySelector('.deleteRoom');
+
+
     if (editUserBtn != null) {
         userId = editUserBtn.getAttribute('id');
         console.log(userId);
         editUserBtn.addEventListener('click', editUser);
     }
 
+    if (deleteRoomBtn != null) {
+        deleteRoomBtn.addEventListener('click', function () {
+            let roomname = deleteBtn.getAttribute('id');
+            console.log(roomname);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                    axios({
+                        method: 'delete',
+                        url: 'http://localhost:3000/chat/delete/' + userId
+                    })
+                        .then(res => console.log(res))
+                        .catch(err => console.error(err));
+                    // window.location.href = '/api/users/dashboard';
+                }
+            })
+        });
+    }
+
     if (deleteBtn != null) {
-        deleteBtn.addEventListener('click', function () {
+        deleteBtn.addEventListener('click', function (e) {
+            e.preventDefault();
             userId = deleteBtn.getAttribute('id');
             Swal.fire({
                 title: 'Are you sure?',
@@ -50,6 +86,4 @@ $(document).ready(function () {
         // Setting up the action url
         document.getElementById('editForm').action = `/api/users/edit/${userId}`;
     }
-
-
 });

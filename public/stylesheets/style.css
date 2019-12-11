@@ -15,10 +15,18 @@ body {
   width: 120px;
 }
 
-.card-body a {
+.card a {
   color: white;
 }
-.card-body a:hover {
+.card a:hover {
   color: rgb(226, 222, 215);
   text-decoration: none !important;
+}
+
+.card{
+  margin: 20px;
+}
+.card span{
+  align-items: flex-end;
+  margin-left: 150px;
 }
