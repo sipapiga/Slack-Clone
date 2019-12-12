@@ -3,7 +3,9 @@ $(document).ready(function () {
     let userId = '';
     const editUserBtn = document.querySelector('.editUserBtn');
     const deleteBtn = document.querySelector('.deleteBtn');
-    const deleteRoomBtn = document.querySelector('.deleteRoom');
+    const deleteRoomBtn = document.querySelectorAll('.deleteRoom');
+
+
 
 
     if (editUserBtn != null) {
@@ -12,35 +14,38 @@ $(document).ready(function () {
         editUserBtn.addEventListener('click', editUser);
     }
 
-    if (deleteRoomBtn != null) {
-        deleteRoomBtn.addEventListener('click', function () {
-            let roomname = deleteBtn.getAttribute('id');
-            console.log(roomname);
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.value) {
-                    Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
-                    axios({
-                        method: 'delete',
-                        url: 'http://localhost:3000/room/delete/' + userId
-                    })
-                        .then(res => console.log(res))
-                        .catch(err => console.error(err));
-                    // window.location.href = '/api/users/dashboard';
-                }
-            })
-        });
+    for (let roomBtn of deleteRoomBtn) {
+        console.log(roomBtn);
+        if (roomBtn != null) {
+            roomBtn.addEventListener('click', function () {
+                let room = deleteBtn.getAttribute('id');
+                console.log(room);
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        Swal.fire(
+                            'Deleted!',
+                            'Your file has been deleted.',
+                            'success'
+                        )
+                        axios({
+                            method: 'delete',
+                            url: 'http://localhost:3000/room/delete/' + room
+                        })
+                            .then(res => console.log(res))
+                            .catch(err => console.error(err));
+                        window.location.href = '/api/users/dashboard';
+                    }
+                })
+            });
+        }
     }
 
     if (deleteBtn != null) {

@@ -13,7 +13,14 @@ module.exports = function (io, Users) {
             socket.join(params.room);
             users.addUser(socket.id, params.name, params.room);
             console.log(users);
+            socket.broadcast.to(params.room).emit('new message', {
+                from: 'Admin',
+                msg: `${params.name} joined the room`,
+                time: new Date().getTime(),
+                room: params.room,
+                profileimage: 'profileimage_1576060672817.jpg'
 
+            });
             io.to(params.room).emit('new user', users.getUsersList(params.room));
 
             callback();
@@ -34,10 +41,13 @@ module.exports = function (io, Users) {
             let user = users.removeUser(socket.id);
 
             if (user) {
-                socket.broadcast.to(user.room).emit('send message', {
+                socket.broadcast.to(user.room).emit('new message', {
                     from: 'Admin',
                     msg: `${user.name} left the room`,
-                    time: new Date().getTime()
+                    time: new Date().getTime(),
+                    room: user.room,
+                    profileimage: 'profileimage_1576060672817.jpg'
+
                 });
                 io.to(user.room).emit('new user', users.getUsersList(user.room));
             }

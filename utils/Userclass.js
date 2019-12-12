@@ -20,7 +20,7 @@ class Users {
         let user = this.getUser(id);
         if (user) {
             this.userList = this.userList.filter((user) => {
-                user.id != id
+                user.id !== id
             });
             return user;
         }
@@ -47,5 +47,5 @@ class Users {
     }
 }
 
-module.exports = Users;
+module.exports = { Users };
 

@@ -19,7 +19,7 @@ const usersRouter = require('./routes/users');
 const chatRouter = require('./routes/chatroom');
 const channelRouter = require('./routes/channel');
 //Get user class
-const Users = require('./utils/Userclass');
+const { Users } = require('./utils/Userclass');
 
 const initiallizePassport = require('./config/passport');
 initiallizePassport(passport);
@@ -57,6 +57,10 @@ app.use((req, res, next) => {
 app.use('/chat', chatRouter(io, Users));
 app.use('/api/users', usersRouter);
 app.use('/room', channelRouter());
+
+app.get('/', (req, res) => {
+    res.render('login', { title: 'login' });
+});
 
 dotenv.config();
 mongoose.connect(process.env.DB_CONNECT, { useUnifiedTopology: true, useNewUrlParser: true }, () => console.log('connected to DB'));

@@ -32,21 +32,22 @@ body {
 }
 
 .chat-avatar{
-  display: inline-block;
-
+  display: inline;
   text-align: center;
-  width: 75px;
+  
 }
 .conversation-text {
-  display: inline-block;
- 
+  display: inline;
   font-size: 16px;
-  margin-left: 50px;
-  width: 70%;
+  margin:10px;
+ 
 }
 .chat-avatar img {
   border-radius: 100%;
-  width: 60%;
+  width: 50px;
+}
+.deleteRoom :hover{
+  cursor: pointer; 
 }
 
 

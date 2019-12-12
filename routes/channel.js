@@ -29,7 +29,7 @@ module.exports = function () {
     //delete room 
     router.delete('/delete/:room', async (req, res) => {
         try {
-            const removeRoom = await User.deleteOne({ name: req.params.room })
+            const removeRoom = await Channel.deleteOne({ _id: req.params.room })
             res.send(removeRoom);
         } catch (err) {
             res.status(500).send({ message: err.message });

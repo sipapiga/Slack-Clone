@@ -43,14 +43,11 @@ $(document).ready(function () {
             <li class="clearfix">
                 <div class="chat-avatar">
                    <img src="/uploads/${data.profileimage}" class"img-circle" alt="userImage" height="32px">
-                    <time datetime="${data.time}" class="time">${new Date(data.time).toLocaleString()}</time>
+                   <i> <time datetime="${data.time}" class="time">${new Date(data.time).toLocaleString()}</time></i>
                 </div>
-                <div class="conversation-text flex items-end">
-                    <div class="text-wrap">
+                <div class="conversation-text">
                         <h4 class="from">${data.from}</h4>
                             <p>${data.msg}</p>
-                    </div>
-                   
                 </div>
             </li>
         </ul>
