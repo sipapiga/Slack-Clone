@@ -1,0 +1,29 @@
+<div class="row my-5 justify-content-center">
+  <div class="row my-4">
+    <h3>
+      Channels
+      <small>
+        <a href="/add-channel"><i class="fas fa-plus-circle mr-1"></i></a
+      ></small>
+    </h3>
+  </div>
+  <div class="container">
+    <ul class="list-unstyled">
+      <h5>Public Channels</h5>
+      <% if(channels.length > 0){ %> <% for (let c of channels) { %>
+      <li>
+        <a href="/chat/<%=c._id %>"><%= c.name %></a>
+      </li>
+      <% } %> <% } %>
+    </ul>
+    <ul class="list-unstyled">
+      <h5>Direct Messages</h5>
+      <% if(privateChannels != undefined) { %> <% if(privateChannels.length >
+      0){ %> <% for (let c of privateChannels) { %>
+      <li>
+        <a href="/chat/<%=c._id %>"><%= c.name%></a>
+      </li>
+      <% } %> <% } %> <% } %>
+    </ul>
+  </div>
+</div>

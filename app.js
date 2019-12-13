@@ -1,68 +1,128 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const socket = require('socket.io');
-const path = require('path');
-const dotenv = require('dotenv');
-const passport = require('passport');
-const seesion = require('express-session');
-const flash = require('express-flash');
-const multer = require('multer')
-const upload = multer({ dest: 'uploads/' })
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
+const path = require("path");
+const cors = require("cors");
+const flash = require("connect-flash");
+const multer = require("multer");
 
-
-const usersRouter = require('./routes/users');
+const errorController = require("./controllers/error");
+const User = require("./models/user");
+const Channel = require("./models/channel");
 
 const app = express();
 
-const initiallizePassport = require('./config/passport');
-initiallizePassport(passport);
+const MONGODB_URI =
+  "mongodb+srv://Barbara:K39jfpejCZhuPiQ@slack-qrlqu.mongodb.net/slack?retryWrites=true&w=majority";
+const store = new MongoDBStore({
+  uri: MONGODB_URI,
+  collection: "sessions"
+});
 
+app.set("view engine", "ejs");
+app.set("views", "views");
+
+const feedRoutes = require("./routes/feed");
+const authRoutes = require("./routes/auth");
+
+const uuidv4 = require("uuid/v4");
+
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, uuidv4());
+  }
+});
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true); //save the file
+  } else {
+    cb(null, false); // don't save the file
+  }
+};
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+);
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
-
-
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-app.use(seesion({
-    secret: 'secret',
+app.use(
+  session({
+    secret: "my secret",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: store
+  })
+);
 
-}));
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  if (req.session.isLoggedIn === true) {
+    res.locals.user = req.session.user;
+  }
+  next();
+});
 
 app.use(flash());
 
-app.get('*', (req, res, next) => {
-    res.locals.user = req.user || null;
-    next();
-});
-
 app.use((req, res, next) => {
-    res.locals.success_msg = req.flash('success_msg');
-    res.locals.error = req.flash('error');
-    next();
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
+    .then(user => {
+      if (!user) {
+        return next();
+      }
+      req.user = user;
+      const channels = Channel.find();
+      req.channels = channels;
+      next();
+    })
+    .catch(err => {
+      throw new Error(err);
+    });
 });
 
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(feedRoutes);
+app.use(authRoutes);
+app.get("/500", errorController.get500);
+app.use(errorController.get404);
 
-app.use('/api/users', usersRouter);
-
-app.use('/', (req, res) => {
-    res.render('login', { title: 'login' });
+app.use((error, req, res, next) => {
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message
+    }
+  });
 });
 
-dotenv.config();
-mongoose.connect(process.env.DB_CONNECT, { useUnifiedTopology: true, useNewUrlParser: true }, () => console.log('connected to DB'));
+app.use((error, req, res, next) => {
+  console.log(error);
+  res.redirect("/500");
+});
 
+mongoose
+  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(result => {})
+  .catch(err => console.log(err));
 
-const port = process.env.PORT || 3000;
+const server = app.listen(3000);
+const io = require("./socket").init(server);
 
-app.listen(port, () => console.log(`Server started on ${port}`));
-
+io.on("connection", socket => {
+  //console.log("user connected");
+  //console.log(socket.id);
+});

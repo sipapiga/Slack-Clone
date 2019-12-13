@@ -1,28 +1,31 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        require: true
-    },
-    email: {
-        type: String,
-        require: true
-    },
-    username: {
-        type: String,
-        require: true
-    },
-    password: {
-        type: String,
-        default: true
-    },
-    profileimage: {
-        type: String
+const Schema = mongoose.Schema;
+
+const userSchema = new Schema({
+  email: {
+    type: String,
+    require: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  imageUrl: {
+    type: String
+  },
+  channels: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Channel"
     }
+  ],
+  resetToken: String,
+  resetTokenExpiration: Date
 });
 
-
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
+module.exports = mongoose.model("User", userSchema);

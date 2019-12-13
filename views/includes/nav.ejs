@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="/">Slack</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse justify-content-end"
+      id="navbarNavDropdown"
+    >
+      <ul class="navbar-nav">
+        <% if(!isAuthenticated) { %>
+        <li class=" nav-item">
+          <a
+            href="/login"
+            class="nav-link <%= path === '/login' ? 'active': ''%>"
+            >Login</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            href="/signup"
+            class="nav-link <%= path === '/signup' ? 'active': ''%>"
+            >Signup</a
+          >
+        </li>
+        <% } else { %>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdownMenuLink"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <%=user.name%>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="/profile">Profile</a>
+            <a class="dropdown-item">
+              <form action="/logout" method="post">
+                <button class="btn btn-link nav-link p-0 m-0" type="submit">
+                  Logout
+                </button>
+              </form>
+            </a>
+          </div>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
