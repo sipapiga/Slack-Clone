@@ -139,11 +139,15 @@ exports.getSignup = (req, res, next) => {
     validationErrors: []
   });
 };
-
+//* added image when signup *
 exports.postSignup = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const name = req.body.name;
+  const image = req.file;
+  const imageUrl = image.path;
+  console.log(image);
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).render("auth/signup", {
@@ -171,7 +175,8 @@ exports.postSignup = async (req, res, next) => {
           const user = new User({
             email: email,
             password: hashedPassword,
-            name: name
+            name: name,
+            imageUrl: imageUrl
           });
           return user.save().then(result => {
             res.redirect("/login");
@@ -304,6 +309,7 @@ exports.getProfile = async (req, res, next) => {
 exports.postProfile = async (req, res, next) => {
   const user = req.user;
   const image = req.file;
+  console.log(image);
   if (!image) {
     console.log("no image");
     return res.redirect("/profile");

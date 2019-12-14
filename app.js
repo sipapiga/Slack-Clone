@@ -15,7 +15,9 @@ const Channel = require("./models/channel");
 const app = express();
 
 const MONGODB_URI =
-  "mongodb+srv://Barbara:K39jfpejCZhuPiQ@slack-qrlqu.mongodb.net/slack?retryWrites=true&w=majority";
+  //Not work on my so i change to my db
+  //"mongodb+srv://Barbara:K39jfpejCZhuPiQ@slack-qrlqu.mongodb.net/slack?retryWrites=true&w=majority";
+  "mongodb+srv://sipr1901:sipr1901@patpra-2jv8s.mongodb.net/test?retryWrites=true&w=majority";
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: "sessions"
@@ -116,7 +118,7 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(result => {})
+  .then(result => { })
   .catch(err => console.log(err));
 
 const server = app.listen(3000);

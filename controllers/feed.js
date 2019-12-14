@@ -31,16 +31,20 @@ const getPrivateChannels = async req => {
 };
 
 exports.getHome = async (req, res, next) => {
-  const users = await User.find({ _id: { $ne: req.user._id } }).select("name");
-  const publicChannels = await Channel.find({ privacy: "public" });
-  const privateChannels = await getPrivateChannels(req);
-  res.render("feed/index", {
-    pageTitle: "Home",
-    path: "/",
-    users: users,
-    channels: publicChannels,
-    privateChannels: privateChannels
-  });
+  try {
+    const users = await User.find({ _id: { $ne: req.user._id } }).select("name");
+    const publicChannels = await Channel.find({ privacy: "public" });
+    const privateChannels = await getPrivateChannels(req);
+    res.render("feed/index", {
+      pageTitle: "Home",
+      path: "/",
+      users: users,
+      channels: publicChannels,
+      privateChannels: privateChannels
+    });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
 };
 
 exports.getChannel = async (req, res, next) => {

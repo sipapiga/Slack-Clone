@@ -8,7 +8,7 @@
     <ul class="list-unstyled">
       <div class="row justify-content-center">
         <% if(users.length > 0) { %> <%for(user of users) {%>
-        <li><a href="/DM/<%=user._id%>"><%=user.name%></a></li>
+        <p><a href="/DM/<%=user._id%>"><%=user.name%></a></p></br>
         <%}%> <% } %>
       </div>
     </ul>
