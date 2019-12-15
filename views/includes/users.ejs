@@ -6,9 +6,9 @@
   </div>
   <div class="container">
     <ul class="list-unstyled">
-      <div class="row justify-content-center">
+      <div class="text-center well">
         <% if(users.length > 0) { %> <%for(user of users) {%>
-        <p><a href="/DM/<%=user._id%>"><%=user.name%></a></p></br>
+        <li><a href="/DM/<%=user._id%>"><%=user.name%><span> <i class="fas fa-circle"></i></span></a></li>
         <%}%> <% } %>
       </div>
     </ul>

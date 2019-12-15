@@ -30,15 +30,29 @@ const getPrivateChannels = async req => {
   }
 };
 
+const userList = [];
+const userIds = [];
 exports.getHome = async (req, res, next) => {
+  // const users = await User.find({ _id: { $ne: req.user._id } }).select("name");
+  console.log(req.user._id);
   try {
-    const users = await User.find({ _id: { $ne: req.user._id } }).select("name");
+    const users = req.user;
+    /* 
+        const checkUserId = userList.filter(user => {
+          console.log('check' + user._id);
+          return user._id === req.user._id
+        }); */
+    if (userIds.includes(req.user.email) === false) {
+      userList.push(users);
+      userIds.push(req.user.email);
+    }
+
     const publicChannels = await Channel.find({ privacy: "public" });
     const privateChannels = await getPrivateChannels(req);
     res.render("feed/index", {
       pageTitle: "Home",
       path: "/",
-      users: users,
+      users: userList,
       channels: publicChannels,
       privateChannels: privateChannels
     });
@@ -53,7 +67,7 @@ exports.getChannel = async (req, res, next) => {
   try {
     const publicChannels = await Channel.find({ privacy: "public" });
     const privateChannels = await getPrivateChannels(req);
-    let channelName = "test";
+    //  let channelName = "test";
     for (c of privateChannels) {
       if (c._id.toString() === channelId.toString()) {
         channelName = c.name;
@@ -67,11 +81,11 @@ exports.getChannel = async (req, res, next) => {
       pageTitle: "channel",
       path: "/",
       channel: {
-        name: channelName,
+        name: channel.name,
         id: channelId
       },
       messages: messages,
-      users: users,
+      users: userList,
       channels: publicChannels,
       privateChannels: privateChannels
     });
@@ -150,7 +164,7 @@ exports.getDM = async (req, res, next) => {
       }
     }
 
-    const name = "Direct Message";
+    const name = user.name;
     const privacy = "private";
     const users = [];
     users.push(user._id);

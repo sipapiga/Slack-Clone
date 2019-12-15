@@ -1,0 +1,11 @@
+span{
+    color: green;
+    padding-left:20px ;
+}
+a:hover{
+    color: rgb(77, 73, 67);
+    text-decoration: none !important;
+}
+li{
+    margin-top: 20px;
+}

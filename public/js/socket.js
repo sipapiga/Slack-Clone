@@ -4,6 +4,7 @@ socket.on("message", (msg, user) => {
   addMessage(msg, user);
 });
 
+
 $(() => {
   let channelId;
   $("#send").click(() => {

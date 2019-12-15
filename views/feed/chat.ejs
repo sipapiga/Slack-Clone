@@ -1,4 +1,5 @@
 <%- include("../includes/head.ejs") %>
+
 <body style="height: 100%">
   <%- include("../includes/nav.ejs") %>
   <div style="height: 100%">
@@ -15,14 +16,8 @@
           </div>
           <hr />
 
-          <div
-            class="d-flex flex-column align-items-between"
-            style="height: 100%"
-          >
-            <div
-              class="row justify-content-center overflow-auto"
-              style="height: 80%"
-            >
+          <div class="d-flex flex-column align-items-between" style="height: 100%">
+            <div class="row justify-content-center overflow-auto" style="height: 80%">
               <div class="col-md-8" id="append">
                 <% if(messages.length > 0) { %> <% for(message of messages) { %>
                 <!-- CHAT -->
@@ -49,22 +44,12 @@
 
             <div class="row justify-content-center mt-auto my-5">
               <div class="col-md-8 d-flex">
-                <textarea
-                  name="text"
-                  type="text"
-                  rows="3"
-                  class="form-control"
-                  id="messageText"
-                ></textarea>
+                <textarea name="text" type="text" rows="3" class="form-control" id="messageText"></textarea>
                 <button id="send" class="btn btn-lg btn-light">
                   Send
                 </button>
-                <input
-                  type="hidden"
-                  name="channelId"
-                  id="channelId"
-                  value="<%= channel.id%>"
-                />
+                <button id="emoji_palette_button" type="button">Palette</button>
+                <input type="hidden" name="channelId" id="channelId" value="<%= channel.id%>" />
               </div>
             </div>
           </div>
